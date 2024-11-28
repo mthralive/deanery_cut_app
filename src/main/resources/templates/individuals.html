@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физические лица</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4 class="mb-3">Физические лица</h4>
+    <div>
+        <a class="btn btn-success button-fixed"
+           th:href="@{/individual/edit}">
+            <i class="fa-solid fa-plus"></i> Добавить
+        </a>
+    </div>
+    <div th:if="${errors}" th:text="${errors}" class="margin-bottom alert alert-danger"></div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Отчество</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="individual, iterator: ${individuals}">
+                <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
+                <td th:text="${individual.first_name}" style="width: 25%"></td>
+                <td th:text="${individual.second_name}" style="width: 25%"></td>
+                <td th:text="${individual.patronymic}" style="width: 25%"></td>
+                <td style="width: 10%">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a class="btn btn-info button-fixed button-sm"
+                           th:href="@{/individual/view/{id}(id=${individual.id})}">
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                        </a>
+                        <button type="button" class="btn btn-danger button-fixed button-sm"
+                                th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${individual.id}').click()|">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <form th:action="@{/individual/delete/{id}(id=${individual.id})}" method="post">
+                        <button th:id="'remove-' + ${individual.id}" type="submit" style="display: none">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физическое лицо</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+    <div layout:fragment="content" class="container">
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Individual Details</h3>
+                            <table class="table table-bordered mt-4">
+                                <tr>
+                                    <th>ID:</th>
+                                    <td th:text="${individualId}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Код физического лица:</th>
+                                    <td th:text="${individual.individual_code}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Имя:</th>
+                                    <td th:text="${individual.first_name}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Фамилия:</th>
+                                    <td th:text="${individual.second_name}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Отчество:</th>
+                                    <td th:text="${individual.patronymic}"></td>
+                                </tr>
+                                <tr>
+                                    <th>День рождения:</th>
+                                    <td th:text="${individual.birthday}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Пол:</th>
+                                    <td th:text="${individual.gender}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Место рождения:</th>
+                                    <td th:text="${individual.birthplace}"></td>
+                                </tr>
+                                <tr>
+                                    <th>СНИЛС:</th>
+                                    <td th:text="${individual.snils}"></td>
+                                </tr>
+                                <tr>
+                                    <th>ИНН:</th>
+                                    <td th:text="${individual.inn}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Адрес регистрации:</th>
+                                    <td th:text="${individual.registration}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Актуальный адрес:</th>
+                                    <td th:text="${individual.actualAddress}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Почта:</th>
+                                    <td th:text="${individual.email}"></td>
+                                </tr>
+                            </table>
+                            <div class="text-center mt-4">
+                                <a href="/individual" class="btn btn-secondary">Назад к списку</a>
+                                <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" class="btn btn-info">Оставить заявку на изменение</a>
+                                <a th:unless="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/individual/view/edit/{id}(id=${individualId})}" class="btn btn-primary">Изменить</a>
+                                <a th:if="${userRole == 'ADMIN'}" th:href="@{/user/create/{id}(id=${individualId})}" class="btn btn-primary">Создать пользователя</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

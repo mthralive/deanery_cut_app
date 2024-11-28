@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация нового пользователя</title>
+    <style>
+        .button-fixed {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+<div layout:fragment="content" class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Регистрация нового пользователя</h4>
+                    <div th:if="${errors}" th:text="${errors}" class="alert alert-danger mb-3"></div>
+                    <form th:action="@{/signup}" th:object="${userDto}" method="post">
+                        <div class="form-group my-3">
+                            <label class="form-label">Почта</label>
+                            <input type="text" class="form-control" th:field="${userDto.email}"
+                                   placeholder="Почта" required autofocus minlength="7" maxlength="64"/>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="form-label">Имя, фамилия и отчество</label>
+                            <input type="text" class="form-control" th:field="${userDto.fullName}"
+                                   placeholder="Имя, фамилия и отчество" required minlength="8" maxlength="64"/>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="form-label">Номер телефона</label>
+                            <input type="text" class="form-control" th:field="${userDto.phone}"
+                                   placeholder="Номер телефона" required minlength="16" maxlength="16"/>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="form-label">Дата рождения</label>
+                            <input type="date" class="form-control" th:field="${userDto.birthday}"
+                                   placeholder="Дата рождения" required/>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" class="form-control" th:field="${userDto.password}"
+                                   placeholder="Пароль" required minlength="8" maxlength="64"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Пароль (подтверждение)</label>
+                            <input type="password" class="form-control" th:field="${userDto.passwordConfirm}"
+                                   placeholder="Пароль (подтверждение)" required minlength="8" maxlength="64"/>
+                        </div>
+                        <div class="d-flex form-group justify-content-center my-3">
+                            <button type="submit" class="btn btn-success btn-block w-100">Зарегистрироваться</button>
+                        </div>
+                        <div class="text-center">
+                            <a class="btn btn-primary button-fixed w-100" href="/oauth2/authorization/google">
+                                <i class="fab fa-google"></i> Регистрация через Google
+                            </a>
+                            <a class="btn btn-primary button-fixed w-100 my-1" href="/login">
+                                <i class="fas fa-sign-in-alt"></i> Вернуться ко входу
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

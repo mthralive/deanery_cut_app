@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}">
+<body class="bg-light justify-content-center align-items-center vh-100">
+<div layout:fragment="content" >
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="text-center card-title">Вход</h4>
+                    <div th:if="${param.error}" class="alert alert-danger margin-bottom">
+                        Пользователь не найден или пароль указан не верно
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success margin-bottom">
+                        Выход успешно произведен
+                    </div>
+                    <div th:if="${param.created}" class="alert alert-success margin-bottom">
+                        Пользователь '<span th:text="${param.created}"></span>' успешно создан
+                    </div>
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-group my-3">
+                            <label class="form-label">Почта</label>
+                            <input type="text" id="username" name="username" class="form-control"
+                                   placeholder="Почта" required="true" autofocus="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                   placeholder="Пароль" required="true"/>
+                        </div>
+                        <div class="d-flex form-group justify-content-center my-3">
+                            <button type="submit" class="btn btn-success w-100">Вход</button>
+                        </div>
+<!--                        <div class="text-center">-->
+<!--                            <a class="btn btn-primary button-fixed w-100" href="/oauth2/authorization/google">-->
+<!--                                <i class="fab fa-google"></i> Вход через Google-->
+<!--                            </a>-->
+<!--                            <a class="btn btn-primary button-fixed w-100 my-1" href="/signup">-->
+<!--                                <i class="fas fa-sign-in-alt"></i> Зарегистрироваться-->
+<!--                            </a>-->
+<!--                        </div>-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

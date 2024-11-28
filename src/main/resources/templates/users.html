@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физические лица</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4 class="mb-3">Пользователи</h4>
+    <h5 class="mb-3">Создание пользователя, проходит через физ. лица</h5>
+    <div th:if="${errors}" th:text="${errors}" class="margin-bottom alert alert-danger"></div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Почта</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Id физ.лица</th>
+                <th scope="col">ФИО физ.лица</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, iterator: ${users}">
+                <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
+                <td th:text="${user.email}" style="width: 15%"></td>
+                <td th:text="${user.userRole}" style="width: 5%"></td>
+                <td th:if="${user.individual}" th:text="${user.individual.id}" style="width: 10%"></td>
+                <td th:if="${user.individual}" th:text="${user.individual.first_name}+' '+${user.individual.second_name}+' '+${user.individual.patronymic}" style="width: 25%"></td>
+                <td style="width: 10%">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a th:if="${user.individual}" class="btn btn-warning button-fixed button-sm"
+                           th:href="@{/user/edit/{id}(id=${user.id})}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                        <a th:if="${user.individual}" class="btn btn-info button-fixed button-sm"
+                           th:href="@{/individual/view/{idd}(idd=${user.individual.id})}">
+                            <i class="fa fa-info" aria-hidden="true"></i>
+                        </a>
+                        <button th:if="${user.individual}" type="button" class="btn btn-danger button-fixed button-sm"
+                                th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${user.id}').click()|">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <form th:if="${user.individual}" th:action="@{/individual/delete/{iddd}(iddd=${user.id})}" method="post">
+                        <button th:id="'remove-' + ${user.id}" type="submit" style="display: none">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+</body>
+</html>
