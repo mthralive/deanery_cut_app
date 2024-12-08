@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class IndividualDto {
 
-    private String individual_code;
+    private Integer individual_code;
 
     @NotBlank(message = "First name is required")
     private String first_name;

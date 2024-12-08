@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физическое лицо</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+    <div layout:fragment="content" class="container">
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                            <h3 class="card-title text-center">Детали учебного плана</h3>
+                            <table class="table table-bordered mt-4">
+                                <tr>
+                                    <th>ID:</th>
+                                    <td th:text="${educationId}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Код учебного плана:</th>
+                                    <td th:text="${education.num}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Дата создания:</th>
+                                    <td th:text="${education.create_date}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Полное название:</th>
+                                    <td th:text="${education.fullName} + ' (' + ${education.shortName} + ')'"></td>
+                                </tr>
+                                <tr>
+                                    <th>С:</th>
+                                    <td th:text="${education.year_from}"></td>
+                                </tr>
+                                <tr>
+                                    <th>По:</th>
+                                    <td th:text="${education.year_to}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Срок обучения:</th>
+                                    <td th:text="${education.edu_years}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Тип:</th>
+                                    <td th:text="${education.edu_type}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Форма:</th>
+                                    <td th:text="${education.edu_form}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Квалификация:</th>
+                                    <td th:text="${education.edu_qual}"></td>
+                                </tr>
+                            </table>
+                            <h4 th:if="${workPlans}" class="card-title text-center">Рабочие планы</h4>
+                            <table th:if="${workPlans}" class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Курсы</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="wp, iterator: ${workPlans}">
+                                    <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
+                                    <td th:text="${wp.name}" style="width: 50%"></td>
+                                    <td th:text="${wp.course}" style="width: 50%"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-center mt-4">
+                                <a href="/education" class="btn btn-secondary">Назад к списку</a>
+                                <a th:href="@{/education/view/edit/{id}(id=${educationId})}" class="btn btn-primary">Изменить</a>
+                                <button th:unless="${workPlans}" type="button" class="btn btn-warning"
+                                        th:attr="onclick=|document.getElementById('set-${educationId}').click()|">
+                                    Создать рабочие планы
+                                </button>
+                            </div>
+                            <form th:unless="${workPlans}" th:action="@{/education/setEducationPlan/{id}(id=${educationId})}" method="post">
+                                <button th:id="'set-' + ${educationId}" type="submit" style="display: none">
+                                    Создать рабочие планы
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

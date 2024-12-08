@@ -85,4 +85,12 @@ public class IndividualService {
     public List<Individual> findAllIndividualsList() {
         return individualRepository.findAll();
     }
+
+    @Transactional
+    public Individual createPersonalCode(UUID id) {
+        final Individual individual = findIndividual(id);
+        individual.setIndividualCode(individual.hashCode());
+        return individualRepository.save(individual);
+    }
+
 }

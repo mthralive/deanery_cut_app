@@ -13,7 +13,8 @@
                 <div class="col-md-8">
                     <div class="card shadow-sm">
                         <div class="card-body">
-                            <h3 class="card-title text-center">Individual Details</h3>
+                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                            <h3 class="card-title text-center">Детали физического лица</h3>
                             <table class="table table-bordered mt-4">
                                 <tr>
                                     <th>ID:</th>
@@ -73,7 +74,16 @@
                                 <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" class="btn btn-info">Оставить заявку на изменение</a>
                                 <a th:unless="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/individual/view/edit/{id}(id=${individualId})}" class="btn btn-primary">Изменить</a>
                                 <a th:if="${userRole == 'ADMIN'}" th:href="@{/user/create/{id}(id=${individualId})}" class="btn btn-primary">Создать пользователя</a>
-                            </div>
+                            <button th:unless="${individual.individual_code}" type="button" class="btn btn-warning"
+                                    th:attr="onclick=|confirm('После утверждения физ. лица. изменение будет возможно только через подачу заявки.') && document.getElementById('change-${individualId}').click()|">
+                                Утвердить физ. лицо
+                            </button>
+                        </div>
+                        <form th:unless="${individual.individual_code}" th:action="@{/individual/setIndividualCode/{id}(id=${individualId})}" method="post">
+                            <button th:id="'change-' + ${individualId}" type="submit" style="display: none">
+                                 Утвердить физ. лицо
+                            </button>
+                        </form>
                         </div>
                     </div>
                 </div>

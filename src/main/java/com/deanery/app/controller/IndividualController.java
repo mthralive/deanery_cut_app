@@ -40,12 +40,16 @@ public class IndividualController {
             model.addAttribute("individualDto", new IndividualDto());
         } else{
             final Individual individual = individualService.findIndividual(id);
-            if(individual.getIndividualCode() != null){
+            if(individual.getIndividualCode() == null || getCurrentUser().getRole() == UserRole.ADMIN){
                 model.addAttribute("individualId", id);
                 model.addAttribute("individualDto", new IndividualDto(individual));
             }
             else {
-
+                model.addAttribute("individualId", id);
+                model.addAttribute("individual", new IndividualDto(individualService.findIndividual(id)));
+                model.addAttribute("userRole", getCurrentUser().getRole().toString());
+                model.addAttribute("errors", "Недостаточно прав.");
+                return "individual-view";
             }
         }
         return "individual-edit";
@@ -106,6 +110,14 @@ public class IndividualController {
     public String deleteIndividual(@PathVariable UUID id) {
         individualService.deleteIndividual(id);
         return "redirect:/individual";
+    }
+
+    @PostMapping("/setIndividualCode/{id}")
+    @CustomSecured(role= {UserRole.AsString.USER, UserRole.AsString.ADMIN})
+    @ActiveUserCheck
+    public String setIndividualCode(@PathVariable UUID id) {
+        individualService.createPersonalCode(id);
+        return "redirect:/individual/view/" + id;
     }
 
     @GetMapping

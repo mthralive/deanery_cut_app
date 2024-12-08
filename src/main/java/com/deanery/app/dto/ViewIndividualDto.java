@@ -19,7 +19,7 @@ public class ViewIndividualDto {
 
     private UUID id;
 
-    private String individual_code;
+    private Integer individual_code;
 
     private String first_name;
 

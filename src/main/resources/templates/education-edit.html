@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физическое лицо</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+    <div layout:fragment="content" class="container">
+        <script src="/js/eduDates.js"></script>
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Учебный план</h3>
+                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                            <form th:action="@{/education/edit/{id}(id=${educationId})}" th:object="${educationDto}" method="post" class="mt-4">
+                                <div class="form-group">
+                                    <label for="num">Номер</label>
+                                    <input type="text" id="num" name="num" th:field="${educationDto.num}" class="form-control" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fullName">Полное название</label>
+                                    <input type="text" id="fullName" name="fullName" th:field="${educationDto.fullName}" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="year_from">С</label>
+                                    <input type="number" min="2000" max="2030" value="2000" step="1" id="year_from" name="year_from" th:field="${educationDto.year_from}" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="year_to">По</label>
+                                    <input type="number" min="2000" max="2030" value="2000" step="1" id="year_to" name="year_to" th:field="${educationDto.year_to}" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="edu_type">Тип</label>
+                                    <select id="edu_type" name="edu_type" th:field="${educationDto.edu_type}" class="form-control" required>
+                                        <option value="BACALAVR">Бакалавриат</option>
+                                        <option value="MAGISTR">Магистратура</option>
+                                        <option value="ASPIR">Аспирантура</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edu_form">Форма</label>
+                                    <select id="edu_form" name="edu_form" th:field="${educationDto.edu_form}" class="form-control" required>
+                                        <option value="EDU_IN">Очно</option>
+                                        <option value="EDU_OUT">Заочно</option>
+                                        <option value="EDU_OUT_IN">Очно-заочно</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edu_qual">Квалификация</label>
+                                    <select id="edu_qual" name="edu_qual" th:field="${educationDto.edu_qual}" class="form-control" required>
+                                        <option value="HIGH">Высшее</option>
+                                        <option value="MID">Среднее-профессиональное</option>
+                                    </select>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary">Подтвердить</button>
+                                    <a href="/education" class="btn btn-secondary">Отмена</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

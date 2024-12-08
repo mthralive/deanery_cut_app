@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity(name = "individual")
@@ -20,15 +21,14 @@ import java.util.UUID;
 public class Individual {
 
     //TODO Добавить фото + связь с рабочим планом
-    //TODO генерация кода физ лица
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid")
     private UUID id;
 
-    @Column(length = 8)
-    private String individualCode;
+    @Column(unique = true, nullable = false)
+    private Integer individualCode;
 
     @Column(nullable = false, length = 64)
     private String first_name;
@@ -64,4 +64,13 @@ public class Individual {
     @Column(nullable = false, unique = true, length = 64)
     @Size(min = 7, max = 64)
     private String email;
+
+    @Override
+    public int hashCode() {
+        Integer hash = Objects.hash(first_name, second_name, patronymic, snils);
+        if(hash > 0){
+            return hash;
+        }
+        return hash * -1;
+    }
 }

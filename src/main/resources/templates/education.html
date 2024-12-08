@@ -7,10 +7,10 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h4 class="mb-3">Физические лица</h4>
+    <h4 class="mb-3">Учебные планы</h4>
     <div>
         <a class="btn btn-success button-fixed"
-           th:href="@{/individual/edit}">
+           th:href="@{/education/edit}">
             <i class="fa-solid fa-plus"></i> Добавить
         </a>
     </div>
@@ -19,30 +19,36 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Фамилия</th>
-                <th scope="col">Отчество</th>
+                <th scope="col">Номер</th>
+                <th scope="col">Название</th>
+                <th scope="col">Года</th>
+                <th scope="col">Тип</th>
+                <th scope="col">Вид</th>
+                <th scope="col">Форма</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="individual, iterator: ${individuals}">
+            <tr th:each="education, iterator: ${educations}">
                 <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
-                <td th:text="${individual.first_name}" style="width: 25%"></td>
-                <td th:text="${individual.second_name}" style="width: 25%"></td>
-                <td th:text="${individual.patronymic}" style="width: 25%"></td>
+                <td th:text="${education.num}" style="width: 10%"></td>
+                <td th:text="${education.fullName}" style="width: 15%"></td>
+                <td th:text="${education.year_from} + '-' + ${education.year_to}" style="width: 15%"></td>
+                <td th:text="${education.edu_type}" style="width: 5%"></td>
+                <td th:text="${education.edu_form}" style="width: 5%"></td>
+                <td th:text="${education.edu_qual}" style="width: 5%"></td>
                 <td style="width: 10%">
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a class="btn btn-info button-fixed button-sm"
-                           th:href="@{/individual/view/{id}(id=${individual.id})}">
-                            ...
+                           th:href="@{/education/view/{id}(id=${education.id})}">
+                            <i class="fa fa-info" aria-hidden="true"></i>
                         </a>
                         <button type="button" class="btn btn-danger button-fixed button-sm"
-                                th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${individual.id}').click()|">
+                                th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${education.id}').click()|">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <form th:action="@{/individual/delete/{id}(id=${individual.id})}" method="post">
-                        <button th:id="'remove-' + ${individual.id}" type="submit" style="display: none">
+                    <form th:action="@{/education/delete/{id}(id=${education.id})}" method="post">
+                        <button th:id="'remove-' + ${education.id}" type="submit" style="display: none">
                             Удалить
                         </button>
                     </form>

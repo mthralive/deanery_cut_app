@@ -21,10 +21,14 @@ public class WorkPlan {
     @Column(columnDefinition = "uuid")
     private UUID id;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer course;
+
     @ManyToOne
     @JoinColumn(name = "educationPlan_id", nullable = false)
     @Fetch(FetchMode.JOIN)
     private EducationPlan educationPlan;
-
-
 }
