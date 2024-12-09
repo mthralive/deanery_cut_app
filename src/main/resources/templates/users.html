@@ -43,7 +43,7 @@
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <form th:if="${user.individual}" th:action="@{/individual/delete/{iddd}(iddd=${user.id})}" method="post">
+                    <form th:if="${user.individual}" th:action="@{/user/delete/{iddd}(iddd=${user.id})}" method="post">
                         <button th:id="'remove-' + ${user.id}" type="submit" style="display: none">
                             Удалить
                         </button>

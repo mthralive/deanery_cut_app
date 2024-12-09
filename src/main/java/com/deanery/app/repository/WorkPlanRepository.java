@@ -8,5 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface WorkPlanRepository extends JpaRepository<WorkPlan, UUID> {
-    List<WorkPlan> findByEducationPlan_Id(UUID id);
+    List<WorkPlan> findByEducationPlan_IdOrderByCourse(UUID id);
+    List<WorkPlan> deleteAllByEducationPlan_Id(UUID id);
 }

@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <h3 class="card-title text-center">Детали физического лица</h3>
                             <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
-                            <form th:action="@{/user/edit}" th:object="${userDto}" method="post" class="mt-4">
+                            <form th:action="@{/user/edit/{id}(id=${userId})}" th:object="${userDto}" method="post" class="mt-4">
                                 <div class="form-group">
                                     <label for="email">Почта</label>
                                     <input type="text" id="email" name="email" th:field="${userDto.email}" class="form-control" required>

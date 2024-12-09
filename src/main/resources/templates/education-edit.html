@@ -27,11 +27,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="year_from">С</label>
-                                    <input type="number" min="2000" max="2030" value="2000" step="1" id="year_from" name="year_from" th:field="${educationDto.year_from}" class="form-control" required>
+                                    <input th:readonly="${educationDto.num != null}" type="number" min="2000" max="2030" value="2000" step="1" id="year_from" name="year_from" th:field="${educationDto.year_from}" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="year_to">По</label>
-                                    <input type="number" min="2000" max="2030" value="2000" step="1" id="year_to" name="year_to" th:field="${educationDto.year_to}" class="form-control">
+                                    <input th:readonly="${educationDto.num != null}"  type="number" min="2000" max="2030" value="2000" step="1" id="year_to" name="year_to" th:field="${educationDto.year_to}" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="edu_type">Тип</label>

@@ -10,6 +10,7 @@ import com.deanery.app.model.Enums.UserRole;
 import com.deanery.app.model.Individual;
 import com.deanery.app.model.User;
 import com.deanery.app.service.IndividualService;
+import com.deanery.app.service.LogInfoService;
 import com.deanery.app.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final IndividualService individualService;
+    private final LogInfoService logInfoService;
 
     @GetMapping("/edit/{id}")
     @ActiveUserCheck
@@ -41,6 +43,7 @@ public class UserController {
 
         if (id != null) {
             UserDto userDto = new UserDto(userService.find(id));
+            model.addAttribute("userId", id);
             userDto.setPassword("");
             model.addAttribute("userDto", userDto);
         }
@@ -76,12 +79,23 @@ public class UserController {
         }
         if (id == null) {
             userService.create(userDto);
+            logInfoService.create(userDto.getIndividual().getId(), "Создание пользователя", getCurrentUser());
         }
         else{
             User user = userService.find(id);
             userService.update(user.getId(), userDto);
+            logInfoService.create(userDto.getIndividual().getId(), "Обновление пользователя", getCurrentUser());
         }
-        return "users";
+        return "redirect:/user";
+    }
+
+    @PostMapping("/delete/{id}")
+    @CustomSecured(role= {UserRole.AsString.ADMIN})
+    @ActiveUserCheck
+    public String deleteUser(@PathVariable UUID id) {
+        userService.delete(id);
+        logInfoService.create(id, "Изменение статуса пользователя на недействительный", getCurrentUser());
+        return "redirect:/user";
     }
 
     @GetMapping

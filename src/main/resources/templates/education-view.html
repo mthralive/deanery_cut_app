@@ -10,86 +10,184 @@
     <div layout:fragment="content" class="container">
         <div class="container h-100 d-flex flex-column justify-content-center">
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
-                            <h3 class="card-title text-center">Детали учебного плана</h3>
-                            <table class="table table-bordered mt-4">
-                                <tr>
-                                    <th>ID:</th>
-                                    <td th:text="${educationId}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Код учебного плана:</th>
-                                    <td th:text="${education.num}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Дата создания:</th>
-                                    <td th:text="${education.create_date}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Полное название:</th>
-                                    <td th:text="${education.fullName} + ' (' + ${education.shortName} + ')'"></td>
-                                </tr>
-                                <tr>
-                                    <th>С:</th>
-                                    <td th:text="${education.year_from}"></td>
-                                </tr>
-                                <tr>
-                                    <th>По:</th>
-                                    <td th:text="${education.year_to}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Срок обучения:</th>
-                                    <td th:text="${education.edu_years}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Тип:</th>
-                                    <td th:text="${education.edu_type}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Форма:</th>
-                                    <td th:text="${education.edu_form}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Квалификация:</th>
-                                    <td th:text="${education.edu_qual}"></td>
-                                </tr>
-                            </table>
-                            <h4 th:if="${workPlans}" class="card-title text-center">Рабочие планы</h4>
-                            <table th:if="${workPlans}" class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Название</th>
-                                    <th scope="col">Курсы</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="wp, iterator: ${workPlans}">
-                                    <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
-                                    <td th:text="${wp.name}" style="width: 50%"></td>
-                                    <td th:text="${wp.course}" style="width: 50%"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="text-center mt-4">
-                                <a href="/education" class="btn btn-secondary">Назад к списку</a>
-                                <a th:href="@{/education/view/edit/{id}(id=${educationId})}" class="btn btn-primary">Изменить</a>
-                                <button th:unless="${workPlans}" type="button" class="btn btn-warning"
-                                        th:attr="onclick=|document.getElementById('set-${educationId}').click()|">
-                                    Создать рабочие планы
-                                </button>
+                <div class="container h-100 d-flex flex-column justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                                    <h3 class="card-title text-center">Детали учебного плана</h3>
+
+                                    <!-- Вкладки -->
+                                    <ul class="nav nav-tabs" id="tabMenu" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                                                    type="button" role="tab" aria-controls="details" aria-selected="true">Детали</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="plans-tab" data-bs-toggle="tab" data-bs-target="#plans"
+                                                    type="button" role="tab" aria-controls="plans" aria-selected="false">Рабочие планы</button>
+                                        </li>
+                                        <li th:if="${iwp}" class="nav-item" role="presentation">
+                                            <button class="nav-link" id="iwp-tab" data-bs-toggle="tab" data-bs-target="#iwp"
+                                                    type="button" role="tab" aria-controls="iwp" aria-selected="false">Физ.лица.</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs"
+                                                    type="button" role="tab" aria-controls="logs" aria-selected="false">Журнал изменений</button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Контент вкладок -->
+                                    <div class="tab-content mt-4" id="tabContent">
+                                        <!-- Вкладка "Детали" -->
+                                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th>ID:</th>
+                                                    <td th:text="${educationId}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Код учебного плана:</th>
+                                                    <td th:text="${education.num}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Дата создания:</th>
+                                                    <td th:text="${education.create_date}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Полное название:</th>
+                                                    <td th:text="${education.fullName} + ' (' + ${education.shortName} + ')'"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>С:</th>
+                                                    <td th:text="${education.year_from}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>По:</th>
+                                                    <td th:text="${education.year_to}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Срок обучения:</th>
+                                                    <td th:text="${education.edu_years}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Тип:</th>
+                                                    <td th:text="${education.edu_type}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Форма:</th>
+                                                    <td th:text="${education.edu_form}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Квалификация:</th>
+                                                    <td th:text="${education.edu_qual}"></td>
+                                                </tr>
+                                            </table>
+                                            <!-- Кнопки -->
+                                            <div class="text-center mt-4">
+                                                <a href="/education" class="btn btn-secondary">Назад к списку</a>
+                                                <a th:if="${education.status.name == 'ACTIVE'}" th:href="@{/education/view/edit/{id}(id=${educationId})}" class="btn btn-primary">Изменить</a>
+                                                <button th:if="${workPlans == null}" type="button" class="btn btn-warning"
+                                                        th:attr="onclick=|document.getElementById('set-${educationId}').click()|">
+                                                    Создать рабочие планы
+                                                </button>
+                                            </div>
+                                            <form th:if="${workPlans == null}" th:action="@{/education/setEducationPlan/{id}(id=${educationId})}" method="post">
+                                                <button th:id="'set-' + ${educationId}" type="submit" style="display: none">
+                                                    Создать рабочие планы
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Вкладка "Рабочие планы" -->
+                                        <div class="tab-pane fade" id="plans" role="tabpanel" aria-labelledby="plans-tab">
+                                            <h4 th:if="${workPlans != null}" class="text-center">Рабочие планы</h4>
+                                            <table th:if="${workPlans != null}" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Название</th>
+                                                    <th scope="col">Курсы</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="wp, iterator: ${workPlans}">
+                                                    <th scope="row" th:text="${iterator.index} + 1"></th>
+                                                    <td th:text="${wp.name}"></td>
+                                                    <td th:text="${wp.course}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- Вкладка "Рабочие планы" -->
+                                        <div th:if="${iwp}" class="tab-pane fade" id="iwp" role="tabpanel" aria-labelledby="iwp-tab">
+                                            <h4 th:if="${workPlans != null}" class="text-center">Физические лица</h4>
+                                            <table th:if="${workPlans != null}" class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Физ. лицо.</th>
+                                                    <th scope="col">Рабочий план</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="wp, iterator: ${iwp}">
+                                                    <th scope="row" th:text="${iterator.index} + 1"></th>
+                                                    <td>
+                                                        <a class="btn btn-info button-fixed button-sm"
+                                                           th:href="@{/individual/view/{id}(id=${wp.individual.id})}"
+                                                           th:text="${wp.individual.first_name} + ' ' + ${wp.individual.second_name} + ' ' + ${wp.individual.patronymic}">
+                                                        </a>
+                                                    </td>
+                                                    <td th:text="${wp.workPlan.name} +'-'+ ${wp.workPlan.course}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            <button th:if="${education.status.name == 'ACTIVE'}" type="button" class="btn btn-warning"
+                                                    th:attr="onclick=|document.getElementById('start-${educationId}').click()|">
+                                                Начало обучения
+                                            </button>
+                                            <form th:if="${education.status.name == 'ACTIVE'}" th:action="@{/education/startCourse/{id}(id=${educationId})}" method="post">
+                                                <button th:id="'start-' + ${educationId}" type="submit" style="display: none">
+                                                    Начало обучения
+                                                </button>
+                                            </form>
+                                            <button th:if="${education.status.name == 'INWORK'}" type="button" class="btn btn-warning"
+                                                    th:attr="onclick=|document.getElementById('setNext-${educationId}').click()|">
+                                                Перевести на следующий курс
+                                            </button>
+                                            <form th:if="${education.status.name == 'INWORK'}" th:action="@{/education/setNextCourse/{id}(id=${educationId})}" method="post">
+                                                <button th:id="'setNext-' + ${educationId}" type="submit" style="display: none">
+                                                    Перевести на следующий курс
+                                                </button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Вкладка "Журнал изменений" -->
+                                        <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                                            <h4 class="text-center">Журнал изменений</h4>
+                                            <div class="border rounded p-2 overflow-auto" style="max-height: 350px;">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr th:each="log : ${logs}">
+                                                        <th th:text="${log.date}"></th>
+                                                        <td th:text="${log.changeMessage}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
                             </div>
-                            <form th:unless="${workPlans}" th:action="@{/education/setEducationPlan/{id}(id=${educationId})}" method="post">
-                                <button th:id="'set-' + ${educationId}" type="submit" style="display: none">
-                                    Создать рабочие планы
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

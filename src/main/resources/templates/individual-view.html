@@ -10,83 +10,172 @@
     <div layout:fragment="content" class="container">
         <div class="container h-100 d-flex flex-column justify-content-center">
             <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
-                            <h3 class="card-title text-center">Детали физического лица</h3>
-                            <table class="table table-bordered mt-4">
-                                <tr>
-                                    <th>ID:</th>
-                                    <td th:text="${individualId}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Код физического лица:</th>
-                                    <td th:text="${individual.individual_code}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Имя:</th>
-                                    <td th:text="${individual.first_name}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Фамилия:</th>
-                                    <td th:text="${individual.second_name}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Отчество:</th>
-                                    <td th:text="${individual.patronymic}"></td>
-                                </tr>
-                                <tr>
-                                    <th>День рождения:</th>
-                                    <td th:text="${individual.birthday}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Пол:</th>
-                                    <td th:text="${individual.gender}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Место рождения:</th>
-                                    <td th:text="${individual.birthplace}"></td>
-                                </tr>
-                                <tr>
-                                    <th>СНИЛС:</th>
-                                    <td th:text="${individual.snils}"></td>
-                                </tr>
-                                <tr>
-                                    <th>ИНН:</th>
-                                    <td th:text="${individual.inn}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Адрес регистрации:</th>
-                                    <td th:text="${individual.registration}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Актуальный адрес:</th>
-                                    <td th:text="${individual.actualAddress}"></td>
-                                </tr>
-                                <tr>
-                                    <th>Почта:</th>
-                                    <td th:text="${individual.email}"></td>
-                                </tr>
-                            </table>
-                            <div class="text-center mt-4">
-                                <a href="/individual" class="btn btn-secondary">Назад к списку</a>
-                                <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" class="btn btn-info">Оставить заявку на изменение</a>
-                                <a th:unless="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/individual/view/edit/{id}(id=${individualId})}" class="btn btn-primary">Изменить</a>
-                                <a th:if="${userRole == 'ADMIN'}" th:href="@{/user/create/{id}(id=${individualId})}" class="btn btn-primary">Создать пользователя</a>
-                            <button th:unless="${individual.individual_code}" type="button" class="btn btn-warning"
-                                    th:attr="onclick=|confirm('После утверждения физ. лица. изменение будет возможно только через подачу заявки.') && document.getElementById('change-${individualId}').click()|">
-                                Утвердить физ. лицо
-                            </button>
-                        </div>
-                        <form th:unless="${individual.individual_code}" th:action="@{/individual/setIndividualCode/{id}(id=${individualId})}" method="post">
-                            <button th:id="'change-' + ${individualId}" type="submit" style="display: none">
-                                 Утвердить физ. лицо
-                            </button>
-                        </form>
+                <div class="container h-100 d-flex flex-column justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                                    <h3 class="card-title text-center">Детали физического лица</h3>
+
+                                    <!-- Вкладки -->
+                                    <ul class="nav nav-tabs" id="tabMenu" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                                                    type="button" role="tab" aria-controls="details" aria-selected="true">Детали</button>
+                                        </li>
+                                        <li th:if="${individual.individual_code}" class="nav-item" role="presentation">
+                                            <button class="nav-link" id="workPlan-tab" data-bs-toggle="tab" data-bs-target="#workPlan"
+                                                    type="button" role="tab" aria-controls="workPlan" aria-selected="false">Рабочие планы</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs"
+                                                    type="button" role="tab" aria-controls="logs" aria-selected="false">Журнал изменений</button>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Контент вкладок -->
+                                    <div class="tab-content mt-4" id="tabContent">
+                                        <!-- Вкладка "Детали" -->
+                                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th>ID:</th>
+                                                    <td th:text="${individualId}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Код физического лица:</th>
+                                                    <td th:text="${individual.individual_code}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Имя:</th>
+                                                    <td th:text="${individual.first_name}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Фамилия:</th>
+                                                    <td th:text="${individual.second_name}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Отчество:</th>
+                                                    <td th:text="${individual.patronymic}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>День рождения:</th>
+                                                    <td th:text="${individual.birthday}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Пол:</th>
+                                                    <td th:text="${individual.gender}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Место рождения:</th>
+                                                    <td th:text="${individual.birthplace}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>СНИЛС:</th>
+                                                    <td th:text="${individual.snils}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>ИНН:</th>
+                                                    <td th:text="${individual.inn}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Адрес регистрации:</th>
+                                                    <td th:text="${individual.registration}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Актуальный адрес:</th>
+                                                    <td th:text="${individual.actualAddress}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Почта:</th>
+                                                    <td th:text="${individual.email}"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <!-- Вкладка "Журнал изменений" -->
+                                        <div th:if="${individual.individual_code}" class="tab-pane fade" id="workPlan" role="tabpanel" aria-labelledby="workPlan-tab">
+                                            <h4 class="text-center">Рабочие планы</h4>
+                                            <div class="border rounded p-2 overflow-auto">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr th:each="ip : ${indPlans}">
+                                                        <th th:text="${ip.workPlan.name} + '-' + ${ip.workPlan.course} + ' | Статус: '+ ${ip.status} "></th>
+                                                        <th th:if="${ip.status.name == 'STUDY'}">
+                                                            <button th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" type="button" class="btn btn-danger"
+                                                                    th:attr="onclick=|confirm('Вы уверены что хотите отчислить физ. лицо?') && document.getElementById('expell-${individualId}').click()|">
+                                                                Отчислить
+                                                            </button>
+                                                            <form th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" th:action="@{'/individual/changeBind/'+${ip.id}+'?status=expelled'}" method="post">
+                                                                <button th:id="'expell-' + ${individualId}" type="submit" style="display: none">
+                                                                    Отчислить
+                                                                </button>
+                                                            </form>
+                                                            <button th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" type="button" class="btn btn-danger"
+                                                                    th:attr="onclick=|confirm('Вы уверены что хотите перевести физ. лицо в академ?') && document.getElementById('academ-${individualId}').click()|">
+                                                                Перевести в академ
+                                                            </button>
+                                                            <form th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" th:action="@{'/individual/changeBind/'+${ip.id}+'?status=academ'}" method="post">
+                                                                <button th:id="'academ-' + ${individualId}" type="submit" style="display: none">
+                                                                    Перевести в академ
+                                                                </button>
+                                                            </form>
+                                                            <button th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" type="button" class="btn btn-danger"
+                                                                    th:attr="onclick=|confirm('Вы уверены что хотите перевести физ. лицо?') && document.getElementById('transfer-${individualId}').click()|">
+                                                                Переведен в другое учебное заведение
+                                                            </button>
+                                                            <form th:if="${ip.workPlan.educationPlan.status.name == 'INWORK'}" th:action="@{'/individual/changeBind/'+${ip.id}+'?status=transferout'}" method="post">
+                                                                <button th:id="'transfer-' + ${individualId}" type="submit" style="display: none">
+                                                                    Переведен в другое учебное заведение
+                                                                </button>
+                                                            </form>
+                                                        </th>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <!-- Вкладка "Журнал изменений" -->
+                                        <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                                            <h4 class="text-center">Журнал изменений</h4>
+                                            <div class="border rounded p-2 overflow-auto" style="max-height: 350px;">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                    <tr th:each="log : ${logs}">
+                                                        <th th:text="${log.date}"></th>
+                                                        <td th:text="${log.changeMessage}"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Кнопки -->
+                                    <div class="text-center mt-4">
+                                        <a href="/individual" class="btn btn-secondary">Назад к списку</a>
+                                        <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" class="btn btn-info">Оставить заявку на изменение</a>
+                                        <a th:unless="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/individual/view/edit/{id}(id=${individualId})}" class="btn btn-primary">Изменить</a>
+                                        <a th:if="${individual.individual_code} or ${userRole == 'ADMIN'}" th:href="@{/individual/addWorkPlan/{id}(id=${individualId})}" class="btn btn-warning">Добавить учебный план</a>
+                                        <a th:if="${user == null} and ${userRole == 'ADMIN'}" th:href="@{/user/create/{id}(id=${individualId})}" class="btn btn-primary">Создать пользователя</a>
+                                        <button th:unless="${individual.individual_code}" type="button" class="btn btn-warning"
+                                                th:attr="onclick=|confirm('После утверждения физ. лица, изменение будет возможно только через подачу заявки.') && document.getElementById('change-${individualId}').click()|">
+                                            Утвердить физ. лицо
+                                        </button>
+                                    </div>
+                                    <form th:unless="${individual.individual_code}" th:action="@{/individual/setIndividualCode/{id}(id=${individualId})}" method="post">
+                                        <button th:id="'change-' + ${individualId}" type="submit" style="display: none">
+                                            Утвердить физ. лицо
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

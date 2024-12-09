@@ -4,6 +4,7 @@ import com.deanery.app.model.EducationPlan;
 import com.deanery.app.model.Enums.EducationForm;
 import com.deanery.app.model.Enums.EducationQual;
 import com.deanery.app.model.Enums.EducationType;
+import com.deanery.app.model.Enums.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class ViewEducationPlanDto {
     private EducationForm edu_form;
 
     private EducationQual edu_qual;
+    private Status status;
 
     public ViewEducationPlanDto(EducationPlan educationPlan) {
         this.id = educationPlan.getId();
@@ -54,5 +56,6 @@ public class ViewEducationPlanDto {
         this.edu_type = educationPlan.getEdu_type();
         this.edu_form = educationPlan.getEdu_form();
         this.edu_qual = educationPlan.getEdu_qual();
+        this.status =educationPlan.getStatus();
     }
 }

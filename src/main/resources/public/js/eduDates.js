@@ -6,9 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const yearFromValue = parseInt(yearFromInput.value, 10);
 
         if (!isNaN(yearFromValue)) {
+            // Устанавливаем минимальное значение для year_to
             yearToInput.min = yearFromValue;
 
-            yearToInput.value = yearFromValue;
+            // Если текущее значение year_to меньше year_from, обновляем его
+            if (parseInt(yearToInput.value, 10) < yearFromValue || isNaN(parseInt(yearToInput.value, 10))) {
+                yearToInput.value = yearFromValue;
+            }
         }
     });
 });

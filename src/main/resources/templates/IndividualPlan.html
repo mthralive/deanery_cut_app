@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <title>Добавление учебного плана</title>
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+<div layout:fragment="content" class="container">
+    <script src="/js/eduPlans.js"></script>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Данные мастера</h4>
+                    <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                    <form th:action="@{/individual/addWorkPlan/{id}(id=${individualId})}" th:object="${indPlanDto}" method="post">
+                        <input type="hidden" th:value="${individualId}" id="indId">
+                        <div class="form-group my-3">
+                            <label class="form-label">Физическое лицо</label>
+                            <input type="hidden" class="form-control" th:field="${indPlanDto.individual}" readonly/>
+                            <input type="text" class="form-control" th:value="${individual.first_name}+' '+${individual.second_name}+' '+${individual.patronymic}"
+                                   readonly/>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="form-label">Поиск</label>
+                            <input id="findPlan" type="text" class="form-control" onchange="getEduPlans()"
+                                   placeholder="Поиск учебного плана"/>
+                        </div>
+                        <div class="form-group my-3">
+                            <select id="eduPlans" style="display: none"  class="form-select" onchange="getWorkPlans()">
+                            </select>
+                        </div>
+                        <div class="form-group my-3">
+                            <select id="workPlans" style="display: none" th:field="${indPlanDto.workPlan}"  class="form-select">
+                            </select>
+                        </div>
+                        <div class="form-group my-3">
+                            <button type="submit" class="btn btn-success w-100">Подтвердить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

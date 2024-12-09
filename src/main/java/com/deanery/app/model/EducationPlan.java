@@ -1,9 +1,6 @@
 package com.deanery.app.model;
 
-import com.deanery.app.model.Enums.EducationForm;
-import com.deanery.app.model.Enums.EducationQual;
-import com.deanery.app.model.Enums.EducationType;
-import com.deanery.app.model.Enums.Gender;
+import com.deanery.app.model.Enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,4 +53,8 @@ public class EducationPlan {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EducationQual edu_qual;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Status status;
 }
