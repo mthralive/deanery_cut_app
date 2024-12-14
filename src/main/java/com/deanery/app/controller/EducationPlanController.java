@@ -52,6 +52,7 @@ public class EducationPlanController {
                 educationPlanService.findAllEduPlansList().stream()
                         .map(ViewEducationPlanDto::new)
                         .toList());
+        model.addAttribute("userRole", getCurrentUser().getRole());
         return "education";
     }
 
@@ -64,6 +65,7 @@ public class EducationPlanController {
             model.addAttribute("workPlans", educationPlanService.findWorkPlans(id));
             model.addAttribute("logs", logInfoService.getLogs(id));
             model.addAttribute("iwp", educationPlanService.findIWP(id));
+            model.addAttribute("userRolee", getCurrentUser().getRole());
         }
         else{
             model.addAttribute("errors", "Doesnt find Education plan");

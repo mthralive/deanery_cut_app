@@ -8,10 +8,26 @@ public enum RequestStatus {
     CANCELED;
 
     public static final class AsString {
-        public static final String SENDED = "SENDED";
+        public static final String SENDED = "Отправлена";
         public static final String CONSIDERATION = "CONSIDERATION";
-        public static final String IN_WORK = "IN_WORK";
-        public static final String COMPLETED = "COMPLETED";
-        public static final String CANCELED = "CANCELED";
+        public static final String IN_WORK = "В работе";
+        public static final String COMPLETED = "Выполнена";
+        public static final String CANCELED = "Отменена";
+    }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case SENDED:
+                return RequestStatus.AsString.SENDED;
+            case IN_WORK:
+                return RequestStatus.AsString.IN_WORK;
+            case COMPLETED:
+                return RequestStatus.AsString.COMPLETED;
+            case CANCELED:
+                return RequestStatus.AsString.CANCELED;
+            default:
+                throw new IllegalArgumentException("Unknown EducationQual: " + this);
+        }
     }
 }

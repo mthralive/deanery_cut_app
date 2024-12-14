@@ -67,7 +67,7 @@ public class UserController {
     }
 
 
-    @PostMapping(value={"/edit", "/edit/{id}"})
+    @PostMapping(value={"/edit/", "/edit/{id}"})
     @ActiveUserCheck
     public String update(@PathVariable(required = false) UUID id,
                          @ModelAttribute("userDto") @Valid UserDto userDto,

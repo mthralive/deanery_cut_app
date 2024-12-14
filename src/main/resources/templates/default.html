@@ -30,9 +30,27 @@
                     <a class="nav-link" href="/login">Вход</a>
                 </ul>
                 <ul class="navbar-nav" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:if="${active}" href="/">Главная</a>
-                    <a class="nav-link" th:if="${active}" href="/individual">Физ. лица</a>
+                    <li class="nav-item">
+                    <a class="nav-link" th:if="${active}" href="/dashboard">Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:if="${active}" href="/individual">Физ. лица</a>
+                </li>
+                    <li><a class="nav-link" th:if="${active}" href="/education">Учебные планы</a></li>
+                    <li class="nav-item">
+                    <a class="nav-link" th:if="${active}" href="/request">Заявки</a>
+                </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/notifications" th:if="${active}">
+                            Уведомления
+                            <span class="badge bg-danger" id="notificationBadge" th:if="${hasUnreadNotifications}">*</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                     <a class="nav-link" th:if="${active}" href="/logout">Выход</a>
+                </li>
+
                 </ul>
             </div>
             <div class="btn-group me-5" th:if="${active} and ${userRole == 'ADMIN'}">
@@ -41,7 +59,6 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="/user">Пользователи</a></li>
-                    <li><a class="dropdown-item" href="/education">Учебные планы</a></li>
                 </ul>
             </div>
         </div>

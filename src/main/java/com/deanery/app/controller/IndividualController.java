@@ -84,7 +84,7 @@ public class IndividualController {
         return "individual-view";
     }
 
-    @PostMapping(value = {"/edit", "/edit/{id}"})
+    @PostMapping(value = {"/edit/", "/edit/{id}"})
     @ActiveUserCheck
     public String saveMaster(@PathVariable(required = false) UUID id,
                              @ModelAttribute("individualDto") @Valid IndividualDto individualDto,

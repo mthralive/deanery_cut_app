@@ -2,6 +2,7 @@ package com.deanery.app.repository;
 
 import com.deanery.app.model.EducationPlan;
 import com.deanery.app.model.Enums.Status;
+import com.deanery.app.model.Individual;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,10 +28,11 @@ public interface EducationPlanRepository extends JpaRepository<EducationPlan, UU
             " order by wp.workPlan.educationPlan.FullName")
     List<EducationPlan> findAllEPWithoutInd(@Param("fullName") String fullName, @Param("ind") UUID ind);
 
-//    @Query(value ="SELECT e.* " +
-//            "FROM education_plan e" +
-//            "WHERE e.full_name LIKE CONCAT('%', 'Программная инженерия', '%')" +
-//            " AND e.status = 'ACTIVE'" +
-//            "ORDER BY e.full_name", nativeQuery = true)
-//    List<EducationPlan> findEP(@Param("fullName") String fullName);
+    @Query("select wp.individual " +
+            "from individualWorkPlan wp " +
+            "where wp.workPlan.educationPlan.id = :ep " +
+            "and wp.status != 'EXPELLED' " +
+            "and wp.status != 'TRANSFERRED' " +
+            "and wp.status != 'ACADEM' ")
+    List<Individual> findAllIndividuals(@Param("ep") UUID ep);
 }

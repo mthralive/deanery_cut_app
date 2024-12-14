@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity(name = "request")
@@ -24,11 +26,11 @@ public class Request {
     private UUID id;
 
     @Column(nullable = false,length = 1024)
-    @Size(min=8)
-    private String request_title;
-
-    @Column(nullable = false,length = 1024)
     private String request_text;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false)
+    private LocalDate date;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,4 +40,15 @@ public class Request {
     @JoinColumn(name = "user_id", nullable = false)
     @Fetch(FetchMode.JOIN)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "individual_id", nullable = false)
+    @Fetch(FetchMode.JOIN)
+    private Individual individual;
+
+    public Request(String testRequest, User user, Individual individual) {
+        this.request_text = testRequest;
+        this.user = user;
+        this.individual = individual;
+    }
 }

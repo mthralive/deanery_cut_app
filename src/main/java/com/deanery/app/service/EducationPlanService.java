@@ -4,11 +4,8 @@ import com.deanery.app.dto.EducationPlanDto;
 import com.deanery.app.error.exception.EduPlanNotFoundException;
 import com.deanery.app.error.exception.UserNotFoundException;
 import com.deanery.app.error.exception.WorkPlanException;
-import com.deanery.app.model.EducationPlan;
+import com.deanery.app.model.*;
 import com.deanery.app.model.Enums.Status;
-import com.deanery.app.model.IndividualWorkPlan;
-import com.deanery.app.model.LogInfo;
-import com.deanery.app.model.WorkPlan;
 import com.deanery.app.repository.EducationPlanRepository;
 import com.deanery.app.repository.IndividualWorkPlanRepository;
 import com.deanery.app.repository.LogInfoRepository;
@@ -161,6 +158,11 @@ public class EducationPlanService {
             eduPlan.setStatus(Status.INACTIVE);
         }
         return educationPlanRepository.save(eduPlan);
+    }
+
+    @Transactional
+    public List<Individual> findAllIndividualOnEP(UUID id){
+        return educationPlanRepository.findAllIndividuals(id);
     }
 
     public String getShortName(String name){

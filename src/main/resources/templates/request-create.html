@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физическое лицо</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+    <div layout:fragment="content" class="container">
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Заявка</h3>
+                            <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                            <form th:action="@{/request/create}" th:object="${requestDto}" method="post" class="mt-4">
+                                <div class="form-group">
+                                    <label for="fullName">Текст заявки</label>
+                                    <textarea type="text" id="fullName" name="fullName" th:field="${requestDto.request_text}" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="individual">Для физического лица</label>
+                                    <p name="individual" id="individual" th:text="${requestDto.individual.first_name}+' '+${requestDto.individual.second_name}+' '+${requestDto.individual.patronymic}" class="btn btn-secondary"/>
+                                    <input type="hidden" th:field="${requestDto.individual}" />
+                                </div>
+                                    <input type="hidden" th:field="${requestDto.user}" />
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary">Подтвердить</button>
+                                    <a href="/request" class="btn btn-secondary">Отмена</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

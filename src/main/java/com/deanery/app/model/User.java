@@ -45,4 +45,9 @@ public class User {
 
     @Column(nullable = false)
     private Boolean isActive;
+
+    public User(UUID uuid, String email) {
+        this.id = uuid;
+        this.email = email;
+    }
 }

@@ -47,6 +47,7 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator'
 
 	implementation 'com.h2database:h2:2.1.210'
+	implementation 'com.opencsv:opencsv:5.7.1'
 
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
 

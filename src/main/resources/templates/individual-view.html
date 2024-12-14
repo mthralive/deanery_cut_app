@@ -156,7 +156,7 @@
                                     <!-- Кнопки -->
                                     <div class="text-center mt-4">
                                         <a href="/individual" class="btn btn-secondary">Назад к списку</a>
-                                        <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" class="btn btn-info">Оставить заявку на изменение</a>
+                                        <a th:if="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/request/create/{id}(id=${individualId})}" class="btn btn-info">Оставить заявку на изменение</a>
                                         <a th:unless="${individual.individual_code} and ${userRole != 'ADMIN'}" th:href="@{/individual/view/edit/{id}(id=${individualId})}" class="btn btn-primary">Изменить</a>
                                         <a th:if="${individual.individual_code} or ${userRole == 'ADMIN'}" th:href="@{/individual/addWorkPlan/{id}(id=${individualId})}" class="btn btn-warning">Добавить учебный план</a>
                                         <a th:if="${user == null} and ${userRole == 'ADMIN'}" th:href="@{/user/create/{id}(id=${individualId})}" class="btn btn-primary">Создать пользователя</a>

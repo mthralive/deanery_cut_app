@@ -20,8 +20,6 @@ import java.util.UUID;
 @Setter
 public class Individual {
 
-    //TODO Добавить фото + связь с рабочим планом
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "uuid")

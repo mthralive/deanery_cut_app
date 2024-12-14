@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Физическое лицо</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+    <div layout:fragment="content" class="container">
+        <div class="container h-100 d-flex flex-column justify-content-center">
+            <div class="row justify-content-center">
+                <div class="container h-100 d-flex flex-column justify-content-center">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
+                                    <h3 class="card-title text-center">Детали заявки</h3>
+                                    <!-- Контент вкладок -->
+                                    <div class="tab-content mt-4" id="tabContent">
+                                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <th>ID:</th>
+                                                    <td th:text="${request.id}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Дата отправки:</th>
+                                                    <td th:text="${request.date}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Текст заявки:</th>
+                                                    <td th:text="${request.request_text}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Статус:</th>
+                                                    <td th:text="${request.status}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Физ. лицо.:</th>
+                                                    <td>
+                                                        <p th:text="${request.individual.first_name}+'
+                                                        '+${request.individual.second_name}+'
+                                                        '+${request.individual.patronymic}"
+                                                           class="btn btn-secondary"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Отправитель:</th>
+                                                    <td>
+                                                        <p th:text="${request.user.email}"
+                                                           class="btn btn-secondary"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                    <!-- Кнопки -->
+                                    <div  class="text-center mt-4">
+                                        <a href="/request" class="btn btn-secondary">Назад к заявкам</a>
+                                        <button th:if="${userRole == 'ADMIN'} and ${request.status.name != 'CANCELED'}"  type="button" class="btn btn-info button-fixed button-sm"
+                                                 th:attr="onclick=|confirm('Изменить статус?') && document.getElementById('stat-${request.id}').click()|">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                        <button th:if="${userRole == 'ADMIN'} and ${request.status.name != 'CANCELED'}" type="button" class="btn btn-danger button-fixed button-sm"
+                                                 th:attr="onclick=|confirm('Отменить запрос?') && document.getElementById('cancel-${request.id}').click()|">
+                                            <i class="fa fa-x" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                        <form th:if="${userRole == 'ADMIN'} and ${request.status.name != 'CANCELED'}" th:action="@{/request/stat/{id}(id=${request.id})}" method="post">
+                                            <button th:id="'stat-' + ${request.id}" type="submit" style="display: none">
+                                                Изменить
+                                            </button>
+                                        </form>
+                                        <form th:if="${userRole == 'ADMIN'} and ${request.status.name != 'CANCELED'}" th:action="@{/request/delete/{id}(id=${request.id})}" method="post">
+                                            <button th:id="'cancel-' + ${request.id}" type="submit" style="display: none">
+                                                Отменить
+                                            </button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

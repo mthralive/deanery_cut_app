@@ -13,7 +13,7 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title text-center">Данные мастера</h4>
+                    <h4 class="card-title text-center">Добавление на учебный план</h4>
                     <div th:if="${errors}" th:text="${errors}" class="mb-3 alert alert-danger"></div>
                     <form th:action="@{/individual/addWorkPlan/{id}(id=${individualId})}" th:object="${indPlanDto}" method="post">
                         <input type="hidden" th:value="${individualId}" id="indId">

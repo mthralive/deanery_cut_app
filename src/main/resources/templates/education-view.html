@@ -3,11 +3,13 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <title>Физическое лицо</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body class="bg-light justify-content-center align-items-center vh-100">
     <div layout:fragment="content" class="container">
+        <script src="/js/report.js"></script>
         <div class="container h-100 d-flex flex-column justify-content-center">
             <div class="row justify-content-center">
                 <div class="container h-100 d-flex flex-column justify-content-center">
@@ -45,7 +47,7 @@
                                             <table class="table table-bordered">
                                                 <tr>
                                                     <th>ID:</th>
-                                                    <td th:text="${educationId}"></td>
+                                                    <td th:text="${educationId}" id="educationId"></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Код учебного плана:</th>
@@ -87,7 +89,7 @@
                                             <!-- Кнопки -->
                                             <div class="text-center mt-4">
                                                 <a href="/education" class="btn btn-secondary">Назад к списку</a>
-                                                <a th:if="${education.status.name == 'ACTIVE'}" th:href="@{/education/view/edit/{id}(id=${educationId})}" class="btn btn-primary">Изменить</a>
+                                                <a th:if="${education.status.name == 'ACTIVE'} and ${userRolee.name == 'ADMIN'}" th:href="@{/education/view/edit/{id}(id=${educationId})}" class="btn btn-primary">Изменить</a>
                                                 <button th:if="${workPlans == null}" type="button" class="btn btn-warning"
                                                         th:attr="onclick=|document.getElementById('set-${educationId}').click()|">
                                                     Создать рабочие планы
@@ -145,20 +147,21 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
-                                            <button th:if="${education.status.name == 'ACTIVE'}" type="button" class="btn btn-warning"
+                                            <button class="btn btn-success ms-3" onclick="exportData()">Экспорт CSV</button>
+                                            <button th:if="${education.status.name == 'ACTIVE'} and ${userRolee.name == 'ADMIN'}" type="button" class="btn btn-warning"
                                                     th:attr="onclick=|document.getElementById('start-${educationId}').click()|">
                                                 Начало обучения
                                             </button>
-                                            <form th:if="${education.status.name == 'ACTIVE'}" th:action="@{/education/startCourse/{id}(id=${educationId})}" method="post">
+                                            <form th:if="${education.status.name == 'ACTIVE'} and ${userRolee.name == 'ADMIN'}" th:action="@{/education/startCourse/{id}(id=${educationId})}" method="post">
                                                 <button th:id="'start-' + ${educationId}" type="submit" style="display: none">
                                                     Начало обучения
                                                 </button>
                                             </form>
-                                            <button th:if="${education.status.name == 'INWORK'}" type="button" class="btn btn-warning"
+                                            <button th:if="${education.status.name == 'INWORK'} and ${userRolee.name == 'ADMIN'}" type="button" class="btn btn-warning"
                                                     th:attr="onclick=|document.getElementById('setNext-${educationId}').click()|">
                                                 Перевести на следующий курс
                                             </button>
-                                            <form th:if="${education.status.name == 'INWORK'}" th:action="@{/education/setNextCourse/{id}(id=${educationId})}" method="post">
+                                            <form th:if="${education.status.name == 'INWORK'} and ${userRolee.name == 'ADMIN'}" th:action="@{/education/setNextCourse/{id}(id=${educationId})}" method="post">
                                                 <button th:id="'setNext-' + ${educationId}" type="submit" style="display: none">
                                                     Перевести на следующий курс
                                                 </button>

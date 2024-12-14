@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявки</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4 class="mb-3">Заявки</h4>
+    <div th:if="${errors}" th:text="${errors}" class="margin-bottom alert alert-danger"></div>
+    <form th:if="${userRole == 'ADMIN'}" action="#" th:action="@{/request/filtered}" method="get">
+        <label for="statusSelect">Найти по статусу</label>
+        <select id="statusSelect" th:value="${status}" th:name="status" class="form-control my-2">
+            <option value="" disabled selected>Выберите статус...</option>
+            <option value="SENDED">Отправлено</option>
+            <option value="IN_WORK">В работе</option>
+            <option value="COMPLETED">Завершено</option>
+            <option value="CANCELED">Отменено</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата отправки</th>
+            <th scope="col">Физ. лицо.</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r, iterator: ${requests}">
+            <th scope="row" th:text="${iterator.index} + 1" style="width: 10%"></th>
+            <td th:text="${r.date}" style="width: 20%"></td>
+            <td style="width: 25%">
+                <a class="btn btn-info button-fixed button-sm"
+                   th:href="@{/individual/view/{id}(id=${r.individual.id})}"
+                   th:text="${r.individual.first_name} + ' ' + ${r.individual.second_name} + ' ' + ${r.individual.patronymic}">
+                </a>
+            </td>
+            <td th:text="${r.status}" style="width: 25%"></td>
+            <td style="width: 10%">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-info button-fixed button-sm"
+                       th:href="@{/request/view/{id}(id=${r.id})}">
+                        ...
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

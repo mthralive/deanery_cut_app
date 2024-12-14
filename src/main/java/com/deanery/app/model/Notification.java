@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.UUID;
 
@@ -25,4 +27,13 @@ public class Notification {
     @Column(nullable = false,length = 1024)
     @Size(min=8)
     private String text;
+
+    @Column
+    private Boolean isChecked;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @Fetch(FetchMode.JOIN)
+    private User user;
+
+
 }

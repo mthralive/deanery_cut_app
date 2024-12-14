@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <title>Уведомления</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .notification-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            width: 80%;
+            position: relative;
+        }
+
+        .notification-list li {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background-color: #f9f9f9;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-list li:hover {
+            background-color: #f2f2f2;
+        }
+
+        .notification-read {
+            background-color: #e0e0e0 !important;
+        }
+
+        .checkbox-container {
+            margin-right: 10px;
+        }
+
+        .buttons-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Промежуток между кнопками */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-light justify-content-center align-items-center vh-100">
+<div layout:fragment="content" class="container" >
+    <script src="/js/notifScript.js"></script>
+    <h2 class="mt-4 mb-4">Уведомления</h2>
+
+    <!-- Контейнер для кнопок -->
+    <div class="buttons-container mb-4">
+        <form th:action="@{/notifications/all-checked}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-warning">
+                Прочитать всё!
+            </button>
+        </form>
+        <button id="deleteSelected" class="btn btn-danger">Удалить выбранные</button>
+    </div>
+
+    <!-- Список уведомлений -->
+    <ul class="notification-list">
+        <!-- Thymeleaf генерирует элементы списка уведомлений -->
+        <li th:each="notification : ${notifications}"
+            th:data-fulltext="${notification.getText()}"
+            th:data-uuid="${notification.getId()}"
+            th:classappend="${notification.getIsChecked()} ? 'notification-read' : ''">
+            <div class="checkbox-container">
+                <input type="checkbox" class="notification-checkbox"
+                       th:data-uuid="${notification.getId()}">
+            </div>
+            <div class="notification-content flex-grow-1">
+                <span th:text="${#strings.abbreviate(notification.getText(), 50)}">
+                    Текст уведомления...
+                </span>
+            </div>
+        </li>
+    </ul>
+
+    <!-- Пагинация -->
+    <div class="mt-4 mb-4">
+        <span th:text="'Страница ' + ${currentPage + 1} + ' из ' + ${totalPages}"></span>
+        <div>
+            <a th:if="${currentPage > 0}" class="btn btn-outline-primary mr-2"
+               th:href="@{/notifications(page=${currentPage - 1})}">Назад</a>
+            <a th:if="${currentPage < totalPages - 1}" class="btn btn-outline-warning"
+               th:href="@{/notifications(page=${currentPage + 1})}">Вперед</a>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="full-text"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

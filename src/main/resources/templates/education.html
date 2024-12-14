@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content">
     <h4 class="mb-3">Учебные планы</h4>
-    <div>
+    <div th:if="${userRole.name == 'ADMIN'}">
         <a class="btn btn-success button-fixed"
            th:href="@{/education/edit}">
             <i class="fa-solid fa-plus"></i> Добавить
@@ -42,12 +42,12 @@
                            th:href="@{/education/view/{id}(id=${education.id})}">
                             <i class="fa fa-info" aria-hidden="true"></i>
                         </a>
-                        <button type="button" class="btn btn-danger button-fixed button-sm"
+                        <button th:if="${userRole == 'ADMIN'}" type="button" class="btn btn-danger button-fixed button-sm"
                                 th:attr="onclick=|confirm('Удалить запись?') && document.getElementById('remove-${education.id}').click()|">
                             <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <form th:action="@{/education/delete/{id}(id=${education.id})}" method="post">
+                    <form th:if="${userRole == 'ADMIN'}" th:action="@{/education/delete/{id}(id=${education.id})}" method="post">
                         <button th:id="'remove-' + ${education.id}" type="submit" style="display: none">
                             Удалить
                         </button>

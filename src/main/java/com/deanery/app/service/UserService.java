@@ -1,10 +1,8 @@
 package com.deanery.app.service;
 
 import com.deanery.app.dto.user.UserDto;
-import com.deanery.app.dto.user.UserSignUpDto;
 import com.deanery.app.error.exception.UserNotFoundException;
 import com.deanery.app.model.Enums.UserRole;
-import com.deanery.app.model.Individual;
 import com.deanery.app.model.User;
 import com.deanery.app.repository.UserRepository;
 import jakarta.validation.ValidationException;
@@ -37,6 +35,7 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
+    private final NotificationService notificationService;
     @Value("{spring.mail.username}")
     private String emailFrom;
 
@@ -72,15 +71,8 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         if (user != null) {
             throw new ValidationException(String.format("User '%s' already exists", user.getEmail()));
         }
-        UserRole role;
-        if (userRepository.findAll().isEmpty()) {
-            role = UserRole.ADMIN;
-        } else {
-            role = UserRole.USER;
-        }
-        final User newUser = new User(null, userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()),
-                userDto.getIndividual() ,role, 0,
-                false);
+        final User newUser = new User(null, userDto.getEmail(), userDto.getPassword(),userDto.getIndividual(), userDto.getUserRole(), 0, false
+        );
         return userRepository.save(newUser);
     }
 
